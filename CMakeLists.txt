@@ -24,14 +24,10 @@ add_definitions(
 	#-DESLOG_NOT_LOG_ERR
 	#-D_WINDOWS
 	-D_CRT_SECURE_NO_WARNINGS)
-
-#include_directories(
-#    H:/study/libevent-2.1.12-stable/WIN32-Code
-# )
 endif()
 set(libevnet_APPS
     test_server
-}
+)
 
 #-----------------------------------------------------------------------------
 # 添加App
