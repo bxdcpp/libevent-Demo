@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 # Define project name
-project(test_server)
+project(libevent_demo)
 
 
 # If the package has been found, several variables will
@@ -29,32 +29,15 @@ add_definitions(
 #    H:/study/libevent-2.1.12-stable/WIN32-Code
 # )
 endif()
+set(libevnet_APPS
+    test_server
+}
 
-include_directories(
-    ${LIBEVENT_INCLUDE_DIR}
- )
-
-#link_directories(
-#    H:/study/libevent-2.1.12-stable-build/lib/Release
-#)
-
-#message("status:"${LIBEVENT_INCLUDE_DIR})
-#message("1111:"${LIBEVENT_SHARED_LIBRARIES})
-#message("2222:"${LIBEVENT_LIBRARIES})
-
-
-add_executable(${PROJECT_NAME} test_server.c)
-
-#  core        - the core functons of libevent
-#  extra       - extra functions, contains http, dns and rpc
-#  pthreads    - multiple threads for libevent, not exists on Windows
-#  openssl     - openssl support for libevent
-target_link_libraries(${PROJECT_NAME}
-    ${LIBEVENT_LIBRARIES}
-    #libevent::core
-    #event
-    #event_extra
-    #event_openssl
-
-)
+#-----------------------------------------------------------------------------
+# 添加App
+# ---------------------------------------------------------------------------
+foreach(app ${libevnet_APPS})
+  message(STATUS "---------------------------Add app " ${app})
+  add_subdirectory(${app})
+endforeach()
 
