@@ -10,8 +10,7 @@ project(libevent_demo)
 # in the OpenCVConfig.cmake file.
 # Print some message showing some of them
 
-set(libevent_DIR H:/study/libevent-install/lib/cmake)
-
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Bin)
 
 find_package(Libevent 2.1 REQUIRED COMPONENTS core)
 
@@ -36,4 +35,3 @@ foreach(app ${libevnet_APPS})
   message(STATUS "---------------------------Add app " ${app})
   add_subdirectory(${app})
 endforeach()
-
