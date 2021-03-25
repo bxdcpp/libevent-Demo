@@ -26,6 +26,7 @@ add_definitions(
 endif()
 set(libevnet_APPS
     test_server
+    test_client
 )
 
 #-----------------------------------------------------------------------------

@@ -1,15 +1,54 @@
 #include <event2/event.h>
 #include <event2/listener.h>
+#include <event2\bufferevent.h>
 #include <string.h>
 #ifndef _WIN32
 #include <signal.h>
 #endif
 #include <iostream>
+
 using namespace std;
 #define SPORT 5001
+
+void socket_readcb(struct bufferevent* bev, void* ctx)
+{
+    char msg[1024] = {0};
+    size_t len = bufferevent_read(bev, msg, sizeof(msg) - 1);
+    std::cout << "server read the data" << msg << std::endl;
+    char reply[] = "I has read your data";
+    bufferevent_write(bev, reply, strlen(reply));
+}
+
+void socket_writecb(struct bufferevent* bev, void* ctx)
+{
+    char reply[] = "I am a server";
+    bufferevent_write(bev, reply, strlen(reply));
+}
+
+
+void socket_eventcb(bufferevent* bev, short events, void* arg)
+{
+    if (events & BEV_EVENT_EOF)
+        printf("connection closed\n");
+    else if (events & BEV_EVENT_ERROR)
+        printf("some other error\n");
+
+    //这将自动close套接字和free读写缓冲区  
+    bufferevent_free(bev);
+
+}
+
 void listen_cb(struct evconnlistener* e, evutil_socket_t s, struct sockaddr* a, int socklen, void* arg)
 {
     cout << "listen_cb" << endl;
+
+    event_base* base = (event_base*)arg;
+
+    //为这个客服端分配一个bufferevent
+    bufferevent* bev = bufferevent_socket_new(base, s, BEV_OPT_CLOSE_ON_FREE);
+    bufferevent_setcb(bev, socket_readcb, socket_writecb, socket_eventcb, base);
+    bufferevent_enable(bev, EV_READ | EV_WRITE | EV_PERSIST);
+    
 }
 int main()
 {
