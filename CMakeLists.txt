@@ -27,6 +27,7 @@ endif()
 set(libevnet_APPS
     test_server
     test_client
+	test_thread_pool
 )
 
 #-----------------------------------------------------------------------------
